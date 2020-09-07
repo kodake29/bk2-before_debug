@@ -10,6 +10,41 @@
 		<th>introduction</th>
 		<th><%= user.introduction %></th>
 	</tr>
+	<% user ||= current_user %>
+	<tr>
+		<th>follow</th>
+		<th>
+			<a href="<%= following_user_path(user) %>">
+    <strong id="following" class="stat">
+      <%= user.followings.count %>
+    </strong>
+		</th>
+	</tr>
+	<tr>
+		<th>follower</th>
+		<th>
+			 <a href="<%= followers_user_path(user) %>">
+    <strong id="followers" class="stat">
+      <%= user.followers.count %>
+    </strong>
+		</th>
+	</tr>
+		<th>
+			<% unless current_user?(user) %>
+  <div id="follow_form">
+  <% if current_user.following?(user) %>
+    <%= form_for(current_user.following_relationships.find_by(following_id: user.id), html: { method: :delete }) do |f| %>
+  <%= f.submit "Unfollow", class: "btn btn-large follow-btn" %>
+<% end %>
+  <% else %>
+     <%= form_for(current_user.following_relationships.build(following_id: user.id)) do |f| %>
+  <div><%= f.hidden_field :following_id %></div>
+  <%= f.submit "Follow", class: "btn btn-large btn-primary follow-btn" %>
+<% end %>
+  <% end %>
+  </div>
+<% end %> 
+		</th>
 </table>
 
 <div class="row">
