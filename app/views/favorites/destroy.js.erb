@@ -1,0 +1,2 @@
+$(".book_<%= @book.id %>").html("<%= j(render 'books/book',  book: @book ) %>")
+$(".book2_<%= @book.id %>").html("<%= j(render 'books/show_book',  book: @book ) %>")
